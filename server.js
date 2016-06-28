@@ -134,7 +134,7 @@ router.route('/users')
 
     })
 
-    .get('/users', function(req, res) {
+    .get(function(req, res) {
         User.find({}, function(err, users) {
             res.json(users);
         });
