@@ -27,18 +27,18 @@ router.post('/authenticate', function(req, res) {
         if (err) throw err;
 
         if (!user) {
-            res.json({ success: false, message: 'Authentication failed. User not found.' });
+            res.jsonp({ success: false, message: 'Authentication failed. User not found.' });
         } else if (user) {
 
             if (user.password != req.body.password) {
-                res.json({ success: false, message: 'Authentication failed. Wrong password.' });
+                res.jsonp({ success: false, message: 'Authentication failed. Wrong password.' });
             } else {
 
                 var token = jsonwebtoken.sign(user, app.get('superSecret'), {
                     expiresIn: 86400
                 });
 
-                res.json({
+                res.jsonp({
                     success: true,
                     message: 'Enjoy your token!',
                     token: token
@@ -49,7 +49,7 @@ router.post('/authenticate', function(req, res) {
 });
 
 
-router.use(function(req, res, next) {
+/*router.use(function(req, res, next) {
 
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
@@ -70,8 +70,7 @@ router.use(function(req, res, next) {
             message: 'No token provided.'
         });
     }
-});
-
+});*/
 
 
 router.route('/users/:user_id')
@@ -80,7 +79,7 @@ router.route('/users/:user_id')
         User.findById(req.params.user_id, function(err, user) {
             if (err)
                 res.send(err);
-            res.json(user);
+            res.jsonp(user);
         });
     })
 
@@ -99,7 +98,7 @@ router.route('/users/:user_id')
                 if (err)
                     res.send(err);
 
-                res.json({ message: 'User updated!' });
+                res.jsonp({ message: 'User updated!' });
             });
 
         });
@@ -112,7 +111,7 @@ router.route('/users/:user_id')
             if (err)
                 res.send(err);
 
-            res.json({ message: 'Successfully deleted' });
+            res.jsonp({ message: 'Successfully deleted' });
         });
     });
 
@@ -129,14 +128,14 @@ router.route('/users')
             if (err)
                 res.send(err);
 
-            res.json({ message: 'User created!' });
+            res.jsonp({ message: 'User created!' });
         });
 
     })
 
     .get(function(req, res) {
         User.find({}, function(err, users) {
-            res.json(users);
+            res.jsonp(users);
         });
     });
 
