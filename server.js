@@ -49,7 +49,7 @@ router.post('/authenticate', function(req, res) {
 });
 
 
-/*router.use(function(req, res, next) {
+router.use(function(req, res, next) {
 
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
@@ -70,7 +70,7 @@ router.post('/authenticate', function(req, res) {
             message: 'No token provided.'
         });
     }
-});*/
+});
 
 
 router.route('/users/:user_id')
