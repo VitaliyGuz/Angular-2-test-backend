@@ -87,6 +87,11 @@ router.use(function(req, res, next) {
 
 router.route('/users/:user_id')
 
+    .options(function (req, res, next) {
+        res.status(200).end();
+        next();
+    })
+
 
     .get(function(req, res) {
         User.findById(req.params.user_id, function(err, user) {
