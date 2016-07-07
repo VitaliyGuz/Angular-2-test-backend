@@ -16,7 +16,12 @@ app.set('superSecret', config.secret);
 
 var router = express.Router();
 
-
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, X-Access-Token");
+    res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE,OPTIONS');
+    next();
+});
 
 router.post('/authenticate', function(req, res) {
 
@@ -52,6 +57,13 @@ router.post('/authenticate', function(req, res) {
 router.use(function(req, res, next) {
 
     var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+    if (req.method == 'OPTIONS') {
+        return res.status(201).send({
+            success: true,
+            message: 'Pre-Flight'
+        });
+    }
 
     if (token) {
 
@@ -145,12 +157,6 @@ router.route('/users')
         });
     });
 
-app.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, X-Access-Token");
-    res.header("Access-Control-Allow-Methods", 'GET,PUT,POST,DELETE,OPTIONS');
-    next();
-});
 
 app.use('/api', router);
 
