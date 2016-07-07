@@ -75,6 +75,7 @@ router.use(function(req, res, next) {
 
 router.route('/users/:user_id')
 
+
     .get(function(req, res) {
         User.findById(req.params.user_id, function(err, user) {
             if (err)
@@ -116,6 +117,11 @@ router.route('/users/:user_id')
     });
 
 router.route('/users')
+
+    .options(function (req, res, next) {
+        res.status(200).end();
+        next();
+    })
 
     .post(function(req, res) {
 
